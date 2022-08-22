@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import VoiceList from "./VoiceList.js";
 import Incrementer from "./Incrementer.js";
@@ -37,6 +37,11 @@ const Config = ({
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(0);
 
+  const [configHue, setConfigHue] = useState();
+  useEffect(() => {
+    setConfigHue(Math.floor(Math.random() * 360));
+  }, []);
+
   const addNewExercise = () => {
     play(addSound);
 
@@ -74,7 +79,10 @@ const Config = ({
   };
 
   return (
-    <div className={`config ${hideConfig ? "hide" : ""}`}>
+    <div
+      className={`config ${hideConfig ? "hide" : ""}`}
+      style={{ backgroundColor: `hsl(${configHue}, 100%, 40%)` }}
+    >
       <fieldset className="workout">
         <label>
           Sets:{" "}

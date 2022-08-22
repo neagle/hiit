@@ -34,7 +34,7 @@ function App() {
     if (!exercises.length) {
       setHideConfig(false);
     }
-  }, []);
+  }, []); // eslint-disable-line
 
   const play = useCallback(
     (sound, force = false) => {

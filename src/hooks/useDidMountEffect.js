@@ -6,7 +6,7 @@ const useDidMountEffect = (func, deps) => {
   useEffect(() => {
     if (didMount.current) func();
     else didMount.current = true;
-  }, [...deps, func]);
+  }, [...deps, func]); // eslint-disable-line
 };
 
 export default useDidMountEffect;

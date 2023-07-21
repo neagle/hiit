@@ -54,7 +54,7 @@ function App() {
           const utterance = new SpeechSynthesisUtterance(text);
           utterance.voice = voice;
           speechSynthesis.speak(utterance);
-        }, 500);
+        }, delay);
       }
     },
     [soundEnabled, speechEnabled, voice]

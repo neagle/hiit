@@ -146,7 +146,6 @@ const Counter = ({ sets, rest, exercises, say, play, setHideConfig }) => {
       if (pausedRef.current) {
         play(pauseOutSound);
         setPaused(false);
-        // tick();
         if (!resting) {
           await countdown();
           if (secondsLeft === exercises[currentExercise].duration) {

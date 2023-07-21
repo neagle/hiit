@@ -6,6 +6,7 @@ import "./App.css";
 import { ReactComponent as ListIcon } from "./icons/list.svg";
 import { ReactComponent as FullScreenIcon } from "./icons/full-screen.svg";
 
+import workouts from "./workouts.js";
 import configOpenSoundUrl from "./sounds/general/Pause Sounds/sfx_sounds_pause7_out.wav";
 import configCloseSoundUrl from "./sounds/general/Pause Sounds/sfx_sounds_pause7_in.wav";
 import fullscreenSoundUrl from "./sounds/general/Interactions/sfx_sounds_interaction24.wav";
@@ -20,6 +21,7 @@ function App() {
   const [sets, setSets] = useLocalStorage("sets", 5);
   const [rest, setRest] = useLocalStorage("rest", 60);
   const [exercises, setExercises] = useLocalStorage("exercises", []);
+  const [selectedWorkout, setSelectedWorkout] = useLocalStorage("workout", 0);
   const [soundEnabled, setSoundEnabled] = useLocalStorage("souneEnabled", true);
   const [speechEnabled, setSpeechEnabled] = useLocalStorage(
     "speechEnabled",
@@ -47,7 +49,6 @@ function App() {
 
   const say = useCallback(
     (text, delay = 500) => {
-      console.log("say", text);
       if (soundEnabled && speechEnabled) {
         setTimeout(() => {
           const utterance = new SpeechSynthesisUtterance(text);
@@ -96,6 +97,9 @@ function App() {
         voice={voice}
         setVoice={setVoice}
         play={play}
+        workouts={workouts}
+        selectedWorkout={selectedWorkout}
+        setSelectedWorkout={setSelectedWorkout}
       />
       <menu className="utility">
         <button

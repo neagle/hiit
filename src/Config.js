@@ -33,6 +33,9 @@ const Config = ({
   voice,
   setVoice,
   play,
+  workouts,
+  selectedWorkout,
+  setSelectedWorkout,
 }) => {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(0);
@@ -78,134 +81,174 @@ const Config = ({
     play(clickSound, true);
   };
 
+  const onWorkoutSelect = (event) => {
+    console.log("workout select", event.target.value);
+    const selectedWorkout = workouts.find(
+      (workout) => workout.name === event.target.value
+    );
+    console.log("selectedWorkout", selectedWorkout);
+    setSelectedWorkout(selectedWorkout);
+    setSets(selectedWorkout.sets);
+    setRest(selectedWorkout.rest);
+    setExercises(selectedWorkout.exercises);
+  };
+
   return (
     <div
       className={`config ${hideConfig ? "hide" : ""}`}
       style={{ backgroundColor: `hsl(${configHue}, 100%, 40%)` }}
     >
-      <fieldset className="workout">
-        <label>
-          Sets:{" "}
-          <input
-            className="number"
-            type="text"
-            value={sets}
-            onChange={(event) => setSets(numberize(event.target.value))}
-          />
-          <Incrementer
-            value={sets}
-            min={0}
-            max={10}
-            setter={(num) => {
-              setSets(numberize(num));
-            }}
-            play={play}
-          />
-        </label>
-        <label>
-          Rest between sets:{" "}
-          <input
-            className="number"
-            type="text"
-            value={rest}
-            onChange={(event) => setRest(numberize(event.target.value))}
-          />
-          <Incrementer
-            value={rest}
-            setter={(num) => {
-              setRest(numberize(num));
-            }}
-            min={0}
-            step={30}
-            play={play}
-          />
-          seconds
-        </label>
-        <label>
-          Exercise:{" "}
-          <input
-            className="number"
-            onChange={(event) =>
-              setNewExerciseDuration(numberize(event.target.value))
-            }
-            value={newExerciseDuration}
-            type="text"
-            placeholder="0"
-          />
-          <Incrementer
-            setter={(num) => {
-              setNewExerciseDuration(numberize(num));
-            }}
-            value={newExerciseDuration}
-            min={0}
-            step={10}
-            play={play}
-          />{" "}
-          seconds{" "}
-          <input
-            onChange={(event) => setNewExerciseName(event.target.value)}
-            value={newExerciseName}
-            placeholder="exercise"
-            onKeyUp={(event) => {
-              if (event.key === "Enter") {
-                addNewExercise();
-              }
-            }}
-          />{" "}
-          <button onClick={addNewExercise}>+</button>
-        </label>
-
-        <ol>
-          <ReactSortable list={exercises} setList={setExercises}>
-            {exercises.map((exercise, i) => (
-              <li key={i}>
-                <div className="exercise">
-                  <div className="description">
-                    <strong>{exercise.duration}</strong> seconds of{" "}
-                    {exercise.name}{" "}
-                  </div>
-                  <button onClick={() => removeExercise(i)}>&times;</button>
-                </div>
-              </li>
-            ))}
-          </ReactSortable>
-        </ol>
-
-        {!exercises?.length && "Add some exercises!"}
-        {exercises.length > 0 && (
-          <button className="clear" onClick={clearExercises}>
-            Clear
-          </button>
-        )}
-      </fieldset>
-      <fieldset className="settings">
-        <label>
-          <Checkbox checked={soundEnabled} onChange={toggleSound} />
-          Sound
-        </label>
-        <div className="speech">
+      <header>
+        <h1>Retro HIIT</h1>
+        <button
+          className="close-config"
+          onClick={() => {
+            setHideConfig(true);
+            play(configCloseSound);
+          }}
+        >
+          &times;
+        </button>
+      </header>
+      <div>
+        <fieldset className="workout">
           <label>
-            <Checkbox
-              checked={speechEnabled}
-              onChange={toggleSpeech}
-              disabled={!soundEnabled}
+            Sets:{" "}
+            <input
+              className="number"
+              type="text"
+              value={sets}
+              onChange={(event) => setSets(numberize(event.target.value))}
+            />
+            <Incrementer
+              value={sets}
+              min={0}
+              max={10}
+              setter={(num) => {
+                setSets(numberize(num));
+              }}
+              play={play}
+            />
+          </label>
+          <label>
+            Rest between sets:{" "}
+            <input
+              className="number"
+              type="text"
+              value={rest}
+              onChange={(event) => setRest(numberize(event.target.value))}
+            />
+            <Incrementer
+              value={rest}
+              setter={(num) => {
+                setRest(numberize(num));
+              }}
+              min={0}
+              step={30}
+              play={play}
+            />
+            seconds
+          </label>
+          <label>
+            Workouts:
+            <select onChange={onWorkoutSelect}>
+              <option value="">--</option>
+              {workouts
+                .sort((a, b) => a.difficulty - b.difficulty)
+                .map((workout) => {
+                  const difficulty = [];
+                  for (let i = 0; i < 5; i++) {
+                    difficulty.push(workout.difficulty <= i ? "▯" : "▮");
+                  }
+                  return (
+                    <option key={workout.name} value={workout.name}>
+                      {workout.name}
+                    </option>
+                  );
+                })}
+            </select>
+          </label>
+          <label>
+            Exercise:{" "}
+            <input
+              className="number"
+              onChange={(event) =>
+                setNewExerciseDuration(numberize(event.target.value))
+              }
+              value={newExerciseDuration}
+              type="text"
+              placeholder="0"
+            />
+            <Incrementer
+              setter={(num) => {
+                setNewExerciseDuration(numberize(num));
+              }}
+              value={newExerciseDuration}
+              min={0}
+              step={10}
+              play={play}
             />{" "}
-            Speech
+            seconds{" "}
+            <input
+              onChange={(event) => setNewExerciseName(event.target.value)}
+              value={newExerciseName}
+              placeholder="exercise"
+              onKeyUp={(event) => {
+                if (event.key === "Enter") {
+                  addNewExercise();
+                }
+              }}
+            />{" "}
+            <button onClick={addNewExercise}>+</button>
           </label>
-          <label className="voice-list">
-            Voice: <VoiceList voice={voice} setVoice={setVoice} />
+
+          <ol>
+            <ReactSortable list={exercises} setList={setExercises}>
+              {exercises.map((exercise, i) => (
+                <li key={i}>
+                  <div className="exercise">
+                    <div className="description">
+                      <strong>{exercise.duration}</strong> seconds of{" "}
+                      {exercise.name}{" "}
+                    </div>
+                    <button onClick={() => removeExercise(i)}>&times;</button>
+                  </div>
+                </li>
+              ))}
+            </ReactSortable>
+          </ol>
+
+          {!exercises?.length && "Add some exercises!"}
+          {exercises.length > 0 && (
+            <button className="clear" onClick={clearExercises}>
+              Clear
+            </button>
+          )}
+        </fieldset>
+        <fieldset className="settings">
+          <label>
+            <Checkbox checked={soundEnabled} onChange={toggleSound} />
+            Sound
           </label>
-        </div>
-      </fieldset>
-      <button
-        className="close-config"
-        onClick={() => {
-          setHideConfig(true);
-          play(configCloseSound);
-        }}
-      >
-        &times;
-      </button>
+          <div className="speech">
+            <label>
+              <Checkbox
+                checked={speechEnabled}
+                onChange={toggleSpeech}
+                disabled={!soundEnabled}
+              />{" "}
+              Speech
+            </label>
+            <label className="voice-list">
+              Voice: <VoiceList voice={voice} setVoice={setVoice} />
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <footer>
+        <b className="copy">&copy;</b>
+        {new Date().getFullYear()} Nate Eagle
+      </footer>
     </div>
   );
 };

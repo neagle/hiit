@@ -10,12 +10,14 @@ import addSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move4.wav";
 import resetSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral4.wav";
 import clickSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move3.wav";
 import configCloseSoundUrl from "./sounds/general/Pause Sounds/sfx_sounds_pause7_in.wav";
+import selectWorkoutSoundUrl from "./sounds/general/Positive Sounds/sfx_sounds_powerup4.wav";
 
 const deleteSound = new Audio(deleteSoundUrl);
 const addSound = new Audio(addSoundUrl);
 const resetSound = new Audio(resetSoundUrl);
 const clickSound = new Audio(clickSoundUrl);
 const configCloseSound = new Audio(configCloseSoundUrl);
+const selectWorkoutSound = new Audio(selectWorkoutSoundUrl);
 
 const Config = ({
   hideConfig,
@@ -61,8 +63,8 @@ const Config = ({
     setExercises(exercises.filter((item, index) => i !== index));
   };
 
-  const clearExercises = () => {
-    const goAhead = window.confirm("Clear all exercises?");
+  const clearExercises = (prompt = true) => {
+    const goAhead = !prompt ? true : window.confirm("Clear all exercises?");
     if (goAhead) {
       play(resetSound);
       setExercises([]);
@@ -82,15 +84,21 @@ const Config = ({
   };
 
   const onWorkoutSelect = (event) => {
-    console.log("workout select", event.target.value);
     const selectedWorkout = workouts.find(
       (workout) => workout.name === event.target.value
     );
-    console.log("selectedWorkout", selectedWorkout);
-    setSelectedWorkout(selectedWorkout);
-    setSets(selectedWorkout.sets);
-    setRest(selectedWorkout.rest);
-    setExercises(selectedWorkout.exercises);
+    if (selectedWorkout) {
+      setSelectedWorkout(selectedWorkout);
+      setSets(selectedWorkout.sets);
+      setRest(selectedWorkout.rest);
+      setExercises(selectedWorkout.exercises);
+      play(selectWorkoutSound);
+    } else {
+      setSelectedWorkout(null);
+      setSets(0);
+      setRest(0);
+      clearExercises(false);
+    }
   };
 
   return (

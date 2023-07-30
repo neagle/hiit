@@ -32,6 +32,24 @@ function App() {
 
   const [wakeLock, setWakeLock] = useState(null);
 
+  const [primaryHue, setPrimaryHue] = useState();
+  const [primaryLightness, setPrimaryLightness] = useState();
+
+  useEffect(() => {
+    const hue = Math.floor(Math.random() * 360);
+    let lightness;
+
+    if (hue >= 60 && hue <= 150) {
+      // Yellow to light green range
+      lightness = 30;
+    } else {
+      lightness = 40;
+    }
+
+    setPrimaryHue(hue);
+    setPrimaryLightness(lightness);
+  }, []);
+
   useEffect(() => {
     if (!exercises.length) {
       setHideConfig(false);
@@ -78,8 +96,16 @@ function App() {
     play(fullscreenSound);
   };
 
+  const primaryColorCSS = `
+    :root {
+      --primary-hue: ${primaryHue};
+      --primary-lightness: ${primaryLightness}%;
+    }
+  `;
+
   return (
     <div className="App">
+      <style>{primaryColorCSS}</style>
       <Config
         hideConfig={hideConfig}
         setHideConfig={setHideConfig}
@@ -132,6 +158,11 @@ function App() {
         play={play}
         setHideConfig={setHideConfig}
       />
+      <footer>
+        <b className="copy">&copy;</b>2023{" "}
+        <a href="https://nateeagle.com">Nate Eagle</a> &bull;{" "}
+        <a href="https://github.com/neagle/hiit">GitHub</a>
+      </footer>
     </div>
   );
 }

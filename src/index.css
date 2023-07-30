@@ -53,7 +53,7 @@ code {
 }
 
 .config {
-  background-color: hsl(150, 100%, 40%);
+  background-color: hsl(var(--primary-hue), 100%, var(--primary-lightness));
   position: absolute;
   left: 0;
   right: 0;
@@ -76,7 +76,8 @@ code {
 
 .config header h1 {
   margin: 0 0 1em;
-  color: hsla(0, 0%, 0%, 0.5);
+  color: white;
+  text-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
 }
 
 .config.hide {
@@ -352,4 +353,33 @@ footer {
 
 .copy {
   margin-right: 5px;
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 3px;
+}
+
+.config a {
+  color: hsla(0, 0%, 100%, 0.7);
+}
+
+footer {
+  color: #ccc;
+}
+
+footer a {
+  color: hsl(var(--primary-hue), 100%, var(--primary-lightness));
+}
+
+footer a:visited {
+  color: hsla(var(--primary-hue), 100%, var(--primary-lightness), 1);
+}
+
+.workout li {
+  line-height: 1.8;
+}
+
+.workout li a {
+  /* outline: 1px solid red; */
 }

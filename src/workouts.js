@@ -1,5 +1,53 @@
 const workouts = [
   {
+    name: "Action Time",
+    description:
+      "Action Time Workout is, essentially, a supercharged burpee but with double the pain you get double the benefits. Keep your body straight during planks and don’t drop down during planks and their transitions. Your ultimate goal is to keep the plank throughout never dropping down to your knees... even though you will really, really want to.",
+    extraCredit: "Keep the plank throughout the set.",
+    difficulty: 4,
+    // sets: [3, 5, 7],
+    sets: 3,
+    rest: 120,
+    exercises: [
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+      {
+        name: "plank hold",
+        duration: 20,
+      },
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+      {
+        name: "plank hold",
+        duration: 20,
+      },
+      {
+        name: "elbow plank hold",
+        duration: 20,
+      },
+      {
+        name: "plank hold",
+        duration: 20,
+      },
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+      {
+        name: "plank hold",
+        duration: 20,
+      },
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+    ],
+  },
+  {
     name: "Beginner HIIT",
     description:
       "The Beginner HIIT Workout is perfect if you are running low on energy, short on time or if you are just starting out with HIIT. It’s not hard yet it is demanding enough to give you a good burn. Try to go flat out each time - after all, it’s only 15 seconds. You can do anything for 15 seconds!",

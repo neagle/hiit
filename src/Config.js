@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import VoiceList from "./VoiceList.js";
 import Incrementer from "./Incrementer.js";
 import Checkbox from "./Checkbox.js";
 import { numberize } from "./utils.js";
+import exerciseDemonstrations from "./exercise-demonstrations.js";
 
 import deleteSoundUrl from "./sounds/general/Negative Sounds/sfx_sounds_damage1.wav";
 import addSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move4.wav";
@@ -41,11 +42,6 @@ const Config = ({
 }) => {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(0);
-
-  const [configHue, setConfigHue] = useState();
-  useEffect(() => {
-    setConfigHue(Math.floor(Math.random() * 360));
-  }, []);
 
   const addNewExercise = () => {
     play(addSound);
@@ -101,11 +97,19 @@ const Config = ({
     }
   };
 
+  const exerciseDisplayName = (name) => {
+    const exerciseDemonstrationURL = exerciseDemonstrations[name];
+    return exerciseDemonstrationURL ? (
+      <a href={exerciseDemonstrationURL} target="_blank" rel="noreferrer">
+        {name}
+      </a>
+    ) : (
+      name
+    );
+  };
+
   return (
-    <div
-      className={`config ${hideConfig ? "hide" : ""}`}
-      style={{ backgroundColor: `hsl(${configHue}, 100%, 40%)` }}
-    >
+    <div className={`config ${hideConfig ? "hide" : ""}`}>
       <header>
         <h1>Retro HIIT</h1>
         <button
@@ -202,12 +206,17 @@ const Config = ({
               value={newExerciseName}
               placeholder="exercise"
               onKeyUp={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === "Enter" && newExerciseName) {
                   addNewExercise();
                 }
               }}
             />{" "}
-            <button onClick={addNewExercise}>+</button>
+            <button
+              onClick={newExerciseName && addNewExercise}
+              disabled={!newExerciseName}
+            >
+              +
+            </button>
           </label>
 
           <ol>
@@ -217,7 +226,7 @@ const Config = ({
                   <div className="exercise">
                     <div className="description">
                       <strong>{exercise.duration}</strong> seconds of{" "}
-                      {exercise.name}{" "}
+                      {exerciseDisplayName(exercise.name)}{" "}
                     </div>
                     <button onClick={() => removeExercise(i)}>&times;</button>
                   </div>
@@ -253,10 +262,6 @@ const Config = ({
           </div>
         </fieldset>
       </div>
-      <footer>
-        <b className="copy">&copy;</b>
-        {new Date().getFullYear()} Nate Eagle
-      </footer>
     </div>
   );
 };

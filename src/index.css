@@ -522,10 +522,29 @@ footer a:visited {
 }
 
 .app-info {
-  line-height: 1.5;
+  line-height: 1.8;
   margin-bottom: 2em;
   padding-bottom: 2em;
   border-bottom: 5px solid white;
 }
 .darebee-attribution {
+}
+
+.show-info, .hide-info {
+  font-size: 12px;
+  padding: 0.5em;
+  border: 3px solid white;
+  margin: 0 calc(-0.5em - 3px);
+  box-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+}
+
+.show-info {
+  color:  white;
+  font-size: 12px;
+  margin-left: 2em;
+}
+
+.config header h1 {
+  display: flex;
+  align-items: center;
 }

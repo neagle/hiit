@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useLocalStorage from "./hooks/useLocalStorage";
 import Select from "react-select";
 import { ReactSortable } from "react-sortablejs";
 import VoiceList from "./VoiceList.js";
@@ -14,6 +15,9 @@ import resetSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral4.wa
 import clickSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move3.wav";
 import configCloseSoundUrl from "./sounds/general/Pause Sounds/sfx_sounds_pause7_in.wav";
 import selectWorkoutSoundUrl from "./sounds/general/Positive Sounds/sfx_sounds_powerup4.wav";
+import favoriteSoundUrl from "./sounds/general/Positive Sounds/sfx_sounds_powerup2.wav";
+import unfavoriteSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral7.wav";
+import infoToggleSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral5.wav";
 
 const deleteSound = new Audio(deleteSoundUrl);
 const addSound = new Audio(addSoundUrl);
@@ -21,6 +25,9 @@ const resetSound = new Audio(resetSoundUrl);
 const clickSound = new Audio(clickSoundUrl);
 const configCloseSound = new Audio(configCloseSoundUrl);
 const selectWorkoutSound = new Audio(selectWorkoutSoundUrl);
+const favoriteSound = new Audio(favoriteSoundUrl);
+const unfavoriteSound = new Audio(unfavoriteSoundUrl);
+const infoToggleSound = new Audio(infoToggleSoundUrl);
 
 const Config = ({
   hideConfig,
@@ -46,6 +53,11 @@ const Config = ({
   favorites,
   setFavorites,
 }) => {
+  const [showInfo, _setShowInfo] = useLocalStorage("showInfo", true);
+  const setShowInfo = (state) => {
+    _setShowInfo(state);
+    play(infoToggleSound);
+  };
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(0);
 
@@ -158,15 +170,24 @@ const Config = ({
       setFavorites(
         favorites.filter((favorite) => favorite !== selectedWorkout.name)
       );
+      play(unfavoriteSound);
     } else {
       setFavorites([...favorites, selectedWorkout.name]);
+      play(favoriteSound);
     }
   };
 
   return (
     <div className={`config ${hideConfig ? "hide" : ""}`}>
       <header>
-        <h1>Retro HIIT</h1>
+        <h1>
+          Retro HIIT
+          {!showInfo && (
+            <button className="show-info" onClick={() => setShowInfo(true)}>
+              Show Info
+            </button>
+          )}
+        </h1>
         <button
           className="close-config"
           onClick={() => {
@@ -179,20 +200,34 @@ const Config = ({
       </header>
       <div>
         <fieldset className="workout">
-          <div className="app-info">
-            <p>
-              Retro HIIT is a guided workout tool for timed high-intensity
-              interval training workouts. It lets you forget about managing the
-              clock and focus on your fitness!
-            </p>
-            <p className="darebee-attribution">
-              All workouts are from{" "}
-              <a href="https://darebee.com/100-hiit-workouts.html">
-                100 HIIT Workouts
-              </a>{" "}
-              on <a href="https://darebee.com/">Darebee</a>.
-            </p>
-          </div>
+          {showInfo && (
+            <div className="app-info">
+              <p>
+                Retro HIIT is a guided workout tool for timed high-intensity
+                interval training workouts. It lets you forget about managing
+                the clock and focus on your fitness!
+              </p>
+              <p className="darebee-attribution">
+                All workouts are from{" "}
+                <a href="https://darebee.com/100-hiit-workouts.html">
+                  100 HIIT Workouts
+                </a>{" "}
+                on <a href="https://darebee.com/">Darebee</a>.
+              </p>
+              <p>
+                If you need some music suggestions, the complete{" "}
+                <a href="https://open.spotify.com/playlist/24P6FdnvH9uZ9yxwRAkeZY">
+                  Kosmischer Läufer: The Secret Cosmic Music of the East German
+                  Olympic Program 1972 – 83
+                </a>{" "}
+                collection is, in the opinion of my ears, the greatest workout
+                music of all time.
+              </p>
+              <button className="hide-info" onClick={() => setShowInfo(false)}>
+                Hide Info
+              </button>
+            </div>
+          )}
           <label>
             Workouts:
             <Select

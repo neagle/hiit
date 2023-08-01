@@ -61,11 +61,11 @@ code {
   transition: transform 0.2s;
   z-index: 100;
 
-  > div {
+  /* > div {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-  }
+  } */
 }
 
 .config header {
@@ -78,6 +78,11 @@ code {
   margin: 0 0 1em;
   color: white;
   text-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+}
+
+.config h2 {
+  text-shadow: 0.2em 0.2em hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  font-size: 18px;
 }
 
 .config.hide {
@@ -119,16 +124,35 @@ fieldset label input + .incrementer {
 }
 
 ol {
-  margin-left: 1em;
+  margin-left: 2.2em;
   margin-bottom: 25px;
   margin-top: 25px;
 }
+
+ol li {
+  position: relative;
+}
+
+ol li .exercise {
+  .handle {
+    cursor: grab;
+    position: absolute;
+    left: -5em;
+
+    &::after {
+      position: relative;
+      top: -0.2em;
+      padding: 0 0.2em;
+      margin-right: 0.2em;
+    }
+  }
+}
+
 
 ol li .exercise {
   display: flex;
   align-items: center;
   padding: 2px 0;
-  cursor: grab;
 }
 
 ol li .exercise:hover button, ol li .exercise button:focus {
@@ -204,6 +228,12 @@ menu.utility > *:focus-visible {
   left: 50px;
   text-transform: uppercase;
   margin: 0;
+
+  .workout-name {
+    display: block;
+    margin-bottom: 0.5em;
+    color: hsl(0, 0%, 50%);
+  }
 }
 
 .total-sets {
@@ -349,6 +379,8 @@ footer {
   padding: 1em;
   color: hsla(0, 0%, 100%, 0.5);
   font-size: 14px;
+  line-height: 2;
+  text-align: right;
 }
 
 .copy {
@@ -382,4 +414,109 @@ footer a:visited {
 
 .workout li a {
   /* outline: 1px solid red; */
+}
+
+.meta {
+  margin-bottom: 3em;
+}
+
+.meta > .description {
+  line-height: 1.5;
+  margin-bottom: 2em;
+}
+
+.settings {
+  margin-top: 3em;
+  border-top: 5px solid white;
+  padding-top: 1em;
+}
+
+.handle::after {
+  content: "⋮⋮";
+}
+
+.difficulty {
+  display: flex;
+  .display {
+    align-self: center;
+  }
+}
+
+.difficulty .display .difficulty-meter b {
+  border-color: white !important;
+  width: 15px;
+  height: 15px;
+  &.full {
+    background: white;
+  }
+}
+
+.workout-select {
+  min-width: 300px;
+}
+
+.workout-option {
+  font-size: 12px;
+  line-height: 1.5;
+  display: flex;
+  padding: 1em;
+
+  &.active {
+    background: hsl(var(--primary-hue), 100%, calc(var(--primary-lightness)*2)) !important;
+  }
+
+  &:hover {
+    /* background: hsl(0, 0%, 80%); */
+    background: hsl(var(--primary-hue), 100%, calc(var(--primary-lightness)*2.3));
+  }
+}
+
+.workout-option-name {
+  display: block;
+  color: hsl(0, 0%, 20%);
+  flex-grow: 1;
+}
+
+.workout-option-difficulty {
+  display: flex;
+  align-items: center;
+  color: red;
+}
+
+.difficulty-meter {
+  display: flex;
+  > b {
+    display: block;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+    border: 3px solid red;
+  }
+
+  .full {
+    background: red;
+  }
+
+  .empty {
+  }
+}
+
+.favorite {
+  margin-left: 0.5em;
+}
+
+.workout-option-favorite {
+  position: relative;
+  top: -0.2em;
+  margin-right: 0.5em;
+}
+
+.close-config-and-start {
+  font-size: 18px;
+  border: 5px solid white;
+  padding: 0.5em;
+  margin-top: 2em;
+  margin-left: calc(-0.5em - 5px);
+  box-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
 }

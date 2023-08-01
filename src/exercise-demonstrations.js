@@ -27,6 +27,7 @@ const exercises = {
   "one-arm side plank": "https://www.youtube.com/watch?v=ioXJRP6HdbU",
   "star planks": "https://www.youtube.com/watch?v=ioXJRP6HdbU",
   "side leg raises": "https://www.youtube.com/watch?v=6sHRqhKCJeA",
+  squats: "https://www.youtube.com/watch?v=Zqc_lc93hak",
 };
 
 export default exercises;

@@ -17,11 +17,22 @@ const configCloseSound = new Audio(configCloseSoundUrl);
 const fullscreenSound = new Audio(fullscreenSoundUrl);
 
 function App() {
+  const defaultWorkout = workouts.sort(
+    (a, b) => a.difficulty - b.difficulty
+  )[0];
   const [hideConfig, setHideConfig] = useLocalStorage("hideConfig", false);
-  const [sets, setSets] = useLocalStorage("sets", 5);
-  const [rest, setRest] = useLocalStorage("rest", 60);
-  const [exercises, setExercises] = useLocalStorage("exercises", []);
-  const [selectedWorkout, setSelectedWorkout] = useLocalStorage("workout", 0);
+  const [sets, setSets] = useLocalStorage("sets", defaultWorkout.levels[0]);
+  const [levels, setLevels] = useLocalStorage("levels", defaultWorkout.levels);
+  const [rest, setRest] = useLocalStorage("rest", defaultWorkout.rest);
+  const [exercises, setExercises] = useLocalStorage(
+    "exercises",
+    defaultWorkout.exercises
+  );
+  const [selectedWorkout, setSelectedWorkout] = useLocalStorage(
+    "workout",
+    defaultWorkout
+  );
+  const [favorites, setFavorites] = useLocalStorage("favorites", []);
   const [soundEnabled, setSoundEnabled] = useLocalStorage("souneEnabled", true);
   const [speechEnabled, setSpeechEnabled] = useLocalStorage(
     "speechEnabled",
@@ -111,6 +122,8 @@ function App() {
         setHideConfig={setHideConfig}
         sets={sets}
         setSets={setSets}
+        levels={levels}
+        setLevels={setLevels}
         rest={rest}
         setRest={setRest}
         exercises={exercises}
@@ -126,6 +139,8 @@ function App() {
         workouts={workouts}
         selectedWorkout={selectedWorkout}
         setSelectedWorkout={setSelectedWorkout}
+        favorites={favorites}
+        setFavorites={setFavorites}
       />
       <menu className="utility">
         <button
@@ -157,11 +172,13 @@ function App() {
         say={say}
         play={play}
         setHideConfig={setHideConfig}
+        name={selectedWorkout.name}
       />
       <footer>
-        <b className="copy">&copy;</b>2023{" "}
+        App <b className="copy">&copy;</b>2023{" "}
         <a href="https://nateeagle.com">Nate Eagle</a> &bull;{" "}
-        <a href="https://github.com/neagle/hiit">GitHub</a>
+        <a href="https://github.com/neagle/hiit">GitHub</a> &bull; Exercises
+        from <a href="https://darebee.com">Darebee</a>
       </footer>
     </div>
   );

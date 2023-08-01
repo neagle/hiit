@@ -1,8 +1,10 @@
 import { useState } from "react";
+import Select from "react-select";
 import { ReactSortable } from "react-sortablejs";
 import VoiceList from "./VoiceList.js";
 import Incrementer from "./Incrementer.js";
 import Checkbox from "./Checkbox.js";
+import DifficultyMeter from "./DifficultyMeter.js";
 import { numberize } from "./utils.js";
 import exerciseDemonstrations from "./exercise-demonstrations.js";
 
@@ -25,6 +27,8 @@ const Config = ({
   setHideConfig,
   sets,
   setSets,
+  levels,
+  setLevels,
   rest,
   setRest,
   exercises,
@@ -39,6 +43,8 @@ const Config = ({
   workouts,
   selectedWorkout,
   setSelectedWorkout,
+  favorites,
+  setFavorites,
 }) => {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(0);
@@ -79,13 +85,15 @@ const Config = ({
     play(clickSound, true);
   };
 
-  const onWorkoutSelect = (event) => {
+  const onWorkoutSelect = (option) => {
     const selectedWorkout = workouts.find(
-      (workout) => workout.name === event.target.value
+      (workout) => workout.name === option.name
     );
+
     if (selectedWorkout) {
       setSelectedWorkout(selectedWorkout);
-      setSets(selectedWorkout.sets);
+      setSets(selectedWorkout.levels[0]);
+      setLevels(selectedWorkout.levels);
       setRest(selectedWorkout.rest);
       setExercises(selectedWorkout.exercises);
       play(selectWorkoutSound);
@@ -108,6 +116,53 @@ const Config = ({
     );
   };
 
+  const workoutOptions = workouts
+    .sort((a, b) => a.difficulty - b.difficulty)
+    .map((workout) => {
+      return {
+        name: workout.name,
+        difficulty: workout.difficulty,
+        favorite: favorites.includes(workout.name),
+      };
+    });
+
+  const CustomOption = ({ data, innerRef, innerProps }) => {
+    return (
+      <div
+        className={`workout-option ${
+          selectedWorkout.name === data.name ? "active" : "inactive"
+        }`}
+        ref={innerRef}
+        {...innerProps}
+      >
+        <span className="workout-option-name">
+          <span className="workout-option-favorite">
+            {data.favorite ? "★" : ""}
+          </span>
+          {data.name}
+        </span>
+        <span className="workout-option-difficulty">
+          <DifficultyMeter difficulty={data.difficulty} />
+        </span>
+      </div>
+    );
+  };
+
+  const isFavorite = (workout) => {
+    return favorites.includes(workout.name);
+  };
+
+  // TODO: Don't forget to add a sound for this! :D
+  const toggleFavorite = () => {
+    if (isFavorite(selectedWorkout)) {
+      setFavorites(
+        favorites.filter((favorite) => favorite !== selectedWorkout.name)
+      );
+    } else {
+      setFavorites([...favorites, selectedWorkout.name]);
+    }
+  };
+
   return (
     <div className={`config ${hideConfig ? "hide" : ""}`}>
       <header>
@@ -124,6 +179,79 @@ const Config = ({
       </header>
       <div>
         <fieldset className="workout">
+          <label>
+            Workouts:
+            <Select
+              className="workout-select"
+              components={{
+                Option: CustomOption,
+              }}
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.name}
+              isSearchable={true}
+              onChange={onWorkoutSelect}
+              defaultValue={workoutOptions.find(
+                (option) => selectedWorkout?.name === option.name
+              )}
+              options={workoutOptions}
+            ></Select>
+            <button
+              className="favorite"
+              title={`${
+                isFavorite(selectedWorkout)
+                  ? "Remove Favorite"
+                  : "Set as Favorite"
+              }`}
+              onClick={toggleFavorite}
+            >
+              {isFavorite(selectedWorkout) ? "★" : "☆"}
+            </button>
+          </label>
+          <div className="meta">
+            {selectedWorkout?.difficulty && (
+              <div className="difficulty">
+                <h2>Difficulty:</h2>
+                <div className="display">
+                  <DifficultyMeter difficulty={selectedWorkout.difficulty} />
+                </div>
+              </div>
+            )}
+            {selectedWorkout?.description && (
+              <div className="description">
+                <h2>Description:</h2>
+                <p>{selectedWorkout?.description}</p>
+              </div>
+            )}
+            {selectedWorkout?.extraCredit && (
+              <div className="extra-credit">
+                <h2>Extra Credit:</h2>
+                <p>{selectedWorkout.extraCredit}</p>
+              </div>
+            )}
+          </div>
+
+          {levels?.length > 1 && (
+            <label>
+              Level:{" "}
+              <input
+                className="number"
+                type="text"
+                value={levels.indexOf(sets) + 1}
+                onChange={(event) =>
+                  setSets(levels[numberize(event.target.value) - 1])
+                }
+              />
+              <Incrementer
+                value={levels.indexOf(sets) + 1}
+                min={1}
+                max={levels.length}
+                setter={(num) => {
+                  setSets(levels[numberize(num) - 1]);
+                }}
+                play={play}
+              />
+            </label>
+          )}
           <label>
             Sets:{" "}
             <input
@@ -162,25 +290,6 @@ const Config = ({
             seconds
           </label>
           <label>
-            Workouts:
-            <select onChange={onWorkoutSelect}>
-              <option value="">--</option>
-              {workouts
-                .sort((a, b) => a.difficulty - b.difficulty)
-                .map((workout) => {
-                  const difficulty = [];
-                  for (let i = 0; i < 5; i++) {
-                    difficulty.push(workout.difficulty <= i ? "▯" : "▮");
-                  }
-                  return (
-                    <option key={workout.name} value={workout.name}>
-                      {workout.name}
-                    </option>
-                  );
-                })}
-            </select>
-          </label>
-          <label>
             Exercise:{" "}
             <input
               className="number"
@@ -211,19 +320,20 @@ const Config = ({
                 }
               }}
             />{" "}
-            <button
-              onClick={newExerciseName && addNewExercise}
-              disabled={!newExerciseName}
-            >
+            <button onClick={addNewExercise} disabled={!newExerciseName}>
               +
             </button>
           </label>
-
           <ol>
-            <ReactSortable list={exercises} setList={setExercises}>
+            <ReactSortable
+              list={exercises}
+              setList={setExercises}
+              handle=".handle"
+            >
               {exercises.map((exercise, i) => (
                 <li key={i}>
                   <div className="exercise">
+                    <b className="handle"></b>
                     <div className="description">
                       <strong>{exercise.duration}</strong> seconds of{" "}
                       {exerciseDisplayName(exercise.name)}{" "}
@@ -234,15 +344,27 @@ const Config = ({
               ))}
             </ReactSortable>
           </ol>
-
           {!exercises?.length && "Add some exercises!"}
           {exercises.length > 0 && (
             <button className="clear" onClick={clearExercises}>
               Clear
             </button>
           )}
+
+          <div>
+            <button
+              className="close-config-and-start"
+              onClick={() => {
+                setHideConfig(true);
+                play(configCloseSound);
+              }}
+            >
+              Close Config and Get Ready to Go!
+            </button>
+          </div>
         </fieldset>
         <fieldset className="settings">
+          <h2>Settings</h2>
           <label>
             <Checkbox checked={soundEnabled} onChange={toggleSound} />
             Sound

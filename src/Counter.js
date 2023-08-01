@@ -20,7 +20,7 @@ const doneSound = new Audio(doneSoundUrl);
 const completeExerciseSound = new Audio(completeExerciseSoundUrl);
 const tickSound = new Audio(tickSoundUrl);
 
-const Counter = ({ sets, rest, exercises, say, play, setHideConfig }) => {
+const Counter = ({ name, sets, rest, exercises, say, play, setHideConfig }) => {
   const [currentSet, setCurrentSet] = useLocalStorage("currentSet", 1);
   const currentSetRef = useRef(currentSet);
   currentSetRef.current = currentSet;
@@ -180,6 +180,7 @@ const Counter = ({ sets, rest, exercises, say, play, setHideConfig }) => {
   return (
     <div className="counter-container">
       <p className="info">
+        <strong className="workout-name">{name}</strong>
         <strong>Set:</strong> {currentSet}{" "}
         <b className="total-sets">(of {sets})</b>
       </p>

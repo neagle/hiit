@@ -698,6 +698,54 @@ const workouts = [
       },
     ],
   },
+  {
+    name: "Super Burn",
+    description:
+      "Get your body into the Super Burn zone with this workout for guaranteed super sweat! Go as fast as you can and try to hit the same number of reps every time you complete each exercise. Keep your arms up throughout the second row of exercises for Extra Credit and aim for a minimum of 10 basic burpees (no push-up) per 20 seconds each time to get the most out of this routine. Catch your breath and repeat!",
+    extraCredit:
+      "Keep arms up at #3, #4 & #5 and do a minimum of 10 basic burpees each time.",
+    difficulty: 3,
+    levels: [3, 5, 7],
+    rest: 120,
+    exercises: [
+      {
+        name: "jumping jacks",
+        duration: 20,
+      },
+      {
+        name: "split jacks",
+        duration: 20,
+      },
+      {
+        name: "jumping jacks",
+        duration: 20,
+      },
+      {
+        name: "arm circles",
+        duration: 20,
+      },
+      {
+        name: "scissor chops",
+        duration: 20,
+      },
+      {
+        name: "arm circles",
+        duration: 20,
+      },
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+      {
+        name: "shoulder taps",
+        duration: 20,
+      },
+      {
+        name: "basic burpees",
+        duration: 20,
+      },
+    ],
+  },
 ];
 
 export default workouts;

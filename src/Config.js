@@ -179,6 +179,20 @@ const Config = ({
       </header>
       <div>
         <fieldset className="workout">
+          <div className="app-info">
+            <p>
+              Retro HIIT is a guided workout tool for timed high-intensity
+              interval training workouts. It lets you forget about managing the
+              clock and focus on your fitness!
+            </p>
+            <p className="darebee-attribution">
+              All workouts are from{" "}
+              <a href="https://darebee.com/100-hiit-workouts.html">
+                100 HIIT Workouts
+              </a>{" "}
+              on <a href="https://darebee.com/">Darebee</a>.
+            </p>
+          </div>
           <label>
             Workouts:
             <Select

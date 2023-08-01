@@ -520,3 +520,12 @@ footer a:visited {
   margin-left: calc(-0.5em - 5px);
   box-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
 }
+
+.app-info {
+  line-height: 1.5;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  border-bottom: 5px solid white;
+}
+.darebee-attribution {
+}

@@ -15,6 +15,18 @@ const exercises = {
   "elbow plank": "https://youtu.be/mMdKpeQRE9I?t=4",
   "elbow plank hold": "https://youtu.be/mMdKpeQRE9I?t=4",
   "plank hold": "https://youtu.be/Zy78sjo1TZE?t=27",
+  "shoulder taps": "https://www.youtube.com/watch?v=gWHQpMUd7vw",
+  punches: "https://www.youtube.com/watch?v=M_4Vt5lfEUE",
+  "sprinter lunges": "https://www.youtube.com/watch?v=kaFs0XcgUfo",
+  climbers: "https://www.youtube.com/watch?v=w2iTOneGPdU",
+  "overhead punches": "https://www.youtube.com/watch?v=UPV4156lSyc",
+  "push-ups": "https://darebee.com/pushups-guide.html",
+  "jumping jacks": "https://www.youtube.com/watch?v=gG2Z1siSvkk",
+  "side jacks": "https://www.youtube.com/watch?v=xnY040imnsE",
+  "jumping Ts": "https://www.youtube.com/watch?v=bdTT0sz5s_c",
+  "one-arm side plank": "https://www.youtube.com/watch?v=ioXJRP6HdbU",
+  "star planks": "https://www.youtube.com/watch?v=ioXJRP6HdbU",
+  "side leg raises": "https://www.youtube.com/watch?v=6sHRqhKCJeA",
 };
 
 export default exercises;

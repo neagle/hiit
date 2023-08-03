@@ -78,7 +78,7 @@ code {
 .config header h1 {
   margin: 0 0 1em;
   color: white;
-  text-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  text-shadow: 0.2em 0.2em hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
   line-height: 1.5
 }
 

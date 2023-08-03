@@ -7,7 +7,7 @@
                                                      
 ```
 
-[Retro HIIT](https://hiit-neagle.vercel.app/) is an app for running HIIT workouts from [this 100-workout guide from Darebee](https://darebee.com/100-hiit-workouts.html).
+[Retro HIIT](https://hiit-neagle.vercel.app/) is an app for running HIIT workouts, similar to those in [this 100-workout guide from Darebee](https://darebee.com/100-hiit-workouts.html).
 
 HIIT workouts are powerful ways to develop the kind of explosive fitness you need for things like tennis. Every summer when the heat sets in and my stomach starts to feel like a cannonball after long points, I realize I need to work on getting more breath and more stamina. I love this no-equipment guide from Darebee, but it's hard to run the programs they recommend, which have somewhat complicated lists of exercises to be run for different time intervals, without some kind of custom counter.
 

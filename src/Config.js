@@ -207,13 +207,6 @@ const Config = ({
                 interval training workouts. It lets you forget about managing
                 the clock and focus on your fitness!
               </p>
-              <p className="darebee-attribution">
-                All workouts are from{" "}
-                <a href="https://darebee.com/100-hiit-workouts.html">
-                  100 HIIT Workouts
-                </a>{" "}
-                on <a href="https://darebee.com/">Darebee</a>.
-              </p>
               <p>
                 If you need some music suggestions, the complete{" "}
                 <a href="https://open.spotify.com/playlist/24P6FdnvH9uZ9yxwRAkeZY">

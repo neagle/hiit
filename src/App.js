@@ -175,10 +175,9 @@ function App() {
         name={selectedWorkout.name}
       />
       <footer>
-        App <b className="copy">&copy;</b>2023{" "}
+        <b className="copy">&copy;</b>2023{" "}
         <a href="https://nateeagle.com">Nate Eagle</a> &bull;{" "}
-        <a href="https://github.com/neagle/hiit">GitHub</a> &bull; Exercises
-        from <a href="https://darebee.com">Darebee</a>
+        <a href="https://github.com/neagle/hiit">GitHub</a>
       </footer>
     </div>
   );

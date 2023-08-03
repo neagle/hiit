@@ -39,7 +39,7 @@ function App() {
     true
   );
   const [voiceName, setVoiceName] = useLocalStorage("voice");
-  const [voice, setVoice] = useState(null);
+  const [voiceObject, setVoiceObject] = useState(null);
 
   const [wakeLock, setWakeLock] = useState(null);
 
@@ -81,19 +81,20 @@ function App() {
       if (soundEnabled && speechEnabled) {
         setTimeout(() => {
           const utterance = new SpeechSynthesisUtterance(text);
-          utterance.voice = voice;
+          utterance.voice = voiceObject;
           speechSynthesis.speak(utterance);
         }, delay);
       }
     },
-    [soundEnabled, speechEnabled, voice]
+    [soundEnabled, speechEnabled, voiceObject]
   );
 
+  // When the voice object changes, update the voice name
   useEffect(() => {
-    if (voice) {
-      setVoiceName(voice.name);
+    if (voiceObject) {
+      setVoiceName(voiceObject.name);
     }
-  }, [voice, setVoiceName]);
+  }, [voiceObject, setVoiceName]);
 
   const toggleFullScreen = async () => {
     if (!document.fullscreenElement) {
@@ -133,8 +134,8 @@ function App() {
         speechEnabled={speechEnabled}
         setSpeechEnabled={setSpeechEnabled}
         voiceName={voiceName}
-        voice={voice}
-        setVoice={setVoice}
+        voiceObject={voiceObject}
+        setVoiceObject={setVoiceObject}
         play={play}
         workouts={workouts}
         selectedWorkout={selectedWorkout}

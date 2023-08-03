@@ -3,7 +3,16 @@ import tickSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move1.wav";
 
 const tickSound = new Audio(tickSoundUrl);
 
-const Incrementer = ({ value, setter, step = 1, min, max, play }) => {
+const Incrementer = ({
+  value,
+  setter,
+  step = 1,
+  min,
+  max,
+  play,
+  label,
+  children,
+}) => {
   const up = () => {
     const newValue = numberize(value) + step;
     setter(typeof max !== "undefined" ? Math.min(value + step, max) : newValue);
@@ -18,8 +27,12 @@ const Incrementer = ({ value, setter, step = 1, min, max, play }) => {
 
   return (
     <div className="incrementer">
-      <button onClick={up}>▲</button>
-      <button onClick={down}>▼</button>
+      {children}
+      <div className="incrementer-controls">
+        <button onClick={up}>▲</button>
+        <button onClick={down}>▼</button>
+      </div>
+      {label && <b className="incrementer-label">{label}</b>}
     </div>
   );
 };

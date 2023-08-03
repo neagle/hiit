@@ -117,13 +117,13 @@ fieldset label {
 }
 
 fieldset label input {
-  margin: 0 10px 0 10px;
+  margin: 0 10px 0 0;
 }
 
-fieldset label input + .incrementer {
+/* fieldset label input + .incrementer {
   margin-left: -7px;
   margin-right: 10px;
-}
+} */
 
 ol {
   margin-left: 2.2em;
@@ -153,8 +153,9 @@ ol li .exercise {
 
 ol li .exercise {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 2px 0;
+  margin-bottom: 1em;
 }
 
 ol li .exercise:hover button, ol li .exercise button:focus {
@@ -163,8 +164,9 @@ ol li .exercise:hover button, ol li .exercise button:focus {
   opacity: 1;
 }
 
-ol li .exercise button {
+ol li .exercise .delete {
   margin-left: 5px;
+  margin-top: 5px;
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -335,27 +337,40 @@ div.countdown.inactive {
 }
 
 .incrementer {
+  display: inline-flex;
+  align-items: center;
+}
+
+.incrementer input {
+  margin-right: 2px !important;
+}
+
+.incrementer-controls {
   display: flex;
   flex-direction: column;
 }
 
-.incrementer button {
+.incrementer-controls button {
   font-size: 12px;
   padding: 2px;
   opacity: 0.5;
   transition: opacity 0.2s;
 }
 
-.incrementer button:hover {
+.incrementer-controls button:hover {
   opacity: 1;
 }
 
-.incrementer button:first-of-type {
+.incrementer-controls button:first-of-type {
   padding-bottom: 0;
 }
 
-.incrementer button:last-of-type {
+.incrementer-controls button:last-of-type {
   padding-top: 0;
+}
+
+.incrementer-label {
+  margin-left: 10px;
 }
 
 .checkbox {
@@ -553,6 +568,19 @@ footer a:visited {
   align-items: center;
 }
 
+.input-group {
+  display: inline-flex;
+
+  > * {
+    margin-left: 10px;
+  }
+}
+
+
+.input-group-control {
+  display: inline-flex;
+}
+
 
 @media (max-width: 600px) {
   .config {
@@ -577,6 +605,10 @@ footer a:visited {
 
   fieldset label {
     flex-wrap: wrap;
+  }
+
+  .workout-select {
+    min-width: auto;
   }
 
   menu.utility {
@@ -612,5 +644,30 @@ footer a:visited {
 
   footer {
     font-size: 10px;
+  }
+
+  .close-config-and-start {
+    margin-left: 0;
+  }
+
+  .show-info, .hide-info {
+    margin-left: 0;
+  }
+
+  label {
+    line-height: 2;
+  }
+
+  .input-group {
+    flex-direction: column;
+    line-height: 3;
+
+    > * {
+      margin: 0.5em 0;
+    }
+  }
+
+  .voice-list select {
+    max-width: 300px;
   }
 }

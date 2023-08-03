@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const VoiceList = ({ voiceName, setVoice }) => {
+const VoiceList = ({ voiceName, setVoiceObject }) => {
   const [voices, _setVoices] = useState();
 
   const setVoices = (voices) => {
@@ -24,7 +24,7 @@ const VoiceList = ({ voiceName, setVoice }) => {
     const name = event.target.value;
     const utterance = new SpeechSynthesisUtterance(name);
     const voiceObject = voices.find((v) => v.name === name);
-    setVoice(voiceObject);
+    setVoiceObject(voiceObject);
     utterance.voice = voiceObject;
     speechSynthesis.speak(utterance);
   };

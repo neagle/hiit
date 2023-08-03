@@ -44,8 +44,9 @@ const Config = ({
   setSoundEnabled,
   speechEnabled,
   setSpeechEnabled,
-  voice,
-  setVoice,
+  voiceName,
+  setVoiceName,
+  setVoiceObject,
   play,
   workouts,
   selectedWorkout,
@@ -148,9 +149,7 @@ const Config = ({
         {...innerProps}
       >
         <span className="workout-option-name">
-          <span className="workout-option-favorite">
-            {data.favorite ? "★" : ""}
-          </span>
+          {data.favorite && <span className="workout-option-favorite">★</span>}
           {data.name}
         </span>
         <span className="workout-option-difficulty">
@@ -275,96 +274,110 @@ const Config = ({
           {levels?.length > 1 && (
             <label>
               Level:{" "}
-              <input
-                className="number"
-                type="text"
-                value={levels.indexOf(sets) + 1}
-                onChange={(event) =>
-                  setSets(levels[numberize(event.target.value) - 1])
-                }
-              />
-              <Incrementer
-                value={levels.indexOf(sets) + 1}
-                min={1}
-                max={levels.length}
-                setter={(num) => {
-                  setSets(levels[numberize(num) - 1]);
-                }}
-                play={play}
-              />
+              <div className="input-group">
+                <Incrementer
+                  value={levels.indexOf(sets) + 1}
+                  min={1}
+                  max={levels.length}
+                  setter={(num) => {
+                    setSets(levels[numberize(num) - 1]);
+                  }}
+                  play={play}
+                >
+                  <input
+                    className="number"
+                    type="text"
+                    value={levels.indexOf(sets) + 1}
+                    onChange={(event) =>
+                      setSets(levels[numberize(event.target.value) - 1])
+                    }
+                  />
+                </Incrementer>
+              </div>
             </label>
           )}
           <label>
             Sets:{" "}
-            <input
-              className="number"
-              type="text"
-              value={sets}
-              onChange={(event) => setSets(numberize(event.target.value))}
-            />
-            <Incrementer
-              value={sets}
-              min={0}
-              max={10}
-              setter={(num) => {
-                setSets(numberize(num));
-              }}
-              play={play}
-            />
+            <div className="input-group">
+              <Incrementer
+                value={sets}
+                min={0}
+                max={10}
+                setter={(num) => {
+                  setSets(numberize(num));
+                }}
+                play={play}
+              >
+                <input
+                  className="number"
+                  type="text"
+                  value={sets}
+                  onChange={(event) => setSets(numberize(event.target.value))}
+                />
+              </Incrementer>
+            </div>
           </label>
           <label>
             Rest between sets:{" "}
-            <input
-              className="number"
-              type="text"
-              value={rest}
-              onChange={(event) => setRest(numberize(event.target.value))}
-            />
-            <Incrementer
-              value={rest}
-              setter={(num) => {
-                setRest(numberize(num));
-              }}
-              min={0}
-              step={30}
-              play={play}
-            />
-            seconds
+            <div className="input-group">
+              <Incrementer
+                value={rest}
+                setter={(num) => {
+                  setRest(numberize(num));
+                }}
+                min={0}
+                step={30}
+                play={play}
+                label="seconds"
+              >
+                <input
+                  className="number"
+                  type="text"
+                  value={rest}
+                  onChange={(event) => setRest(numberize(event.target.value))}
+                />
+              </Incrementer>
+            </div>
           </label>
           <label>
             Exercise:{" "}
-            <input
-              className="number"
-              onChange={(event) =>
-                setNewExerciseDuration(numberize(event.target.value))
-              }
-              value={newExerciseDuration}
-              type="text"
-              placeholder="0"
-            />
-            <Incrementer
-              setter={(num) => {
-                setNewExerciseDuration(numberize(num));
-              }}
-              value={newExerciseDuration}
-              min={0}
-              step={10}
-              play={play}
-            />{" "}
-            seconds{" "}
-            <input
-              onChange={(event) => setNewExerciseName(event.target.value)}
-              value={newExerciseName}
-              placeholder="exercise"
-              onKeyUp={(event) => {
-                if (event.key === "Enter" && newExerciseName) {
-                  addNewExercise();
-                }
-              }}
-            />{" "}
-            <button onClick={addNewExercise} disabled={!newExerciseName}>
-              +
-            </button>
+            <div className="input-group">
+              <Incrementer
+                setter={(num) => {
+                  setNewExerciseDuration(numberize(num));
+                }}
+                value={newExerciseDuration}
+                min={0}
+                step={10}
+                play={play}
+                label="seconds"
+              >
+                <input
+                  className="number"
+                  onChange={(event) =>
+                    setNewExerciseDuration(numberize(event.target.value))
+                  }
+                  value={newExerciseDuration}
+                  type="text"
+                  placeholder="0"
+                />
+              </Incrementer>
+              <div className="input-group-control">
+                <input
+                  onChange={(event) => setNewExerciseName(event.target.value)}
+                  value={newExerciseName}
+                  placeholder="exercise"
+                  onKeyUp={(event) => {
+                    if (event.key === "Enter" && newExerciseName) {
+                      addNewExercise();
+                    }
+                  }}
+                />{" "}
+                <button onClick={addNewExercise} disabled={!newExerciseName}>
+                  +
+                </button>
+              </div>
+            </div>
           </label>
           <ol>
             <ReactSortable
@@ -380,7 +393,13 @@ const Config = ({
                       <strong>{exercise.duration}</strong> seconds of{" "}
                       {exerciseDisplayName(exercise.name)}{" "}
                     </div>
-                    <button onClick={() => removeExercise(i)}>&times;</button>
+                    <button
+                      className="delete"
+                      title="Remove this exercise"
+                      onClick={() => removeExercise(i)}
+                    >
+                      &times;
+                    </button>
                   </div>
                 </li>
               ))}
@@ -421,7 +440,11 @@ const Config = ({
               Speech
             </label>
             <label className="voice-list">
-              Voice: <VoiceList voice={voice} setVoice={setVoice} />
+              Voice:{" "}
+              <VoiceList
+                voiceName={voiceName}
+                setVoiceObject={setVoiceObject}
+              />
             </label>
           </div>
         </fieldset>

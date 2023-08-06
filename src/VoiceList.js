@@ -13,7 +13,12 @@ const VoiceList = ({ voiceName, setVoiceObject }) => {
 
     if (!voices?.length) {
       speechSynthesis.onvoiceschanged = (args) => {
-        setVoices(speechSynthesis.getVoices());
+        const voices = speechSynthesis.getVoices();
+        setVoices(voices);
+        if (voiceName) {
+          const voiceObject = voices.find((v) => v.name === voiceName);
+          setVoiceObject(voiceObject);
+        }
       };
     } else {
       setVoices(voices);

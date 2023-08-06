@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Select from "react-select";
-import { ReactSortable } from "react-sortablejs";
 import VoiceList from "./VoiceList.js";
 import Incrementer from "./Incrementer.js";
 import Checkbox from "./Checkbox.js";
@@ -60,7 +59,7 @@ const Config = ({
     play(infoToggleSound);
   };
   const [newExerciseName, setNewExerciseName] = useState("");
-  const [newExerciseDuration, setNewExerciseDuration] = useState(0);
+  const [newExerciseDuration, setNewExerciseDuration] = useState(20);
 
   const addNewExercise = () => {
     play(addSound);
@@ -380,30 +379,24 @@ const Config = ({
             </div>
           </label>
           <ol>
-            <ReactSortable
-              list={exercises}
-              setList={setExercises}
-              handle=".handle"
-            >
-              {exercises.map((exercise, i) => (
-                <li key={i}>
-                  <div className="exercise">
-                    <b className="handle"></b>
-                    <div className="description">
-                      <strong>{exercise.duration}</strong> seconds of{" "}
-                      {exerciseDisplayName(exercise.name)}{" "}
-                    </div>
-                    <button
-                      className="delete"
-                      title="Remove this exercise"
-                      onClick={() => removeExercise(i)}
-                    >
-                      &times;
-                    </button>
+            {exercises.map((exercise, i) => (
+              <li key={i}>
+                <div className="exercise">
+                  {/* <b className="handle"></b> */}
+                  <div className="description">
+                    <strong>{exercise.duration}</strong> seconds of{" "}
+                    {exerciseDisplayName(exercise.name)}{" "}
                   </div>
-                </li>
-              ))}
-            </ReactSortable>
+                  <button
+                    className="delete"
+                    title="Remove this exercise"
+                    onClick={() => removeExercise(i)}
+                  >
+                    &times;
+                  </button>
+                </div>
+              </li>
+            ))}
           </ol>
           {!exercises?.length && "Add some exercises!"}
           {exercises.length > 0 && (

@@ -214,6 +214,16 @@ const Config = ({
                 collection is, in the opinion of my ears, the greatest workout
                 music of all time.
               </p>
+              <iframe
+                title="Kosmischer Läufer: The Secret Cosmic Music of the East German Olympic Program 1972 – 83"
+                style={{ border: 0, borderRadius: 12, marginBottom: "1em" }}
+                src="https://open.spotify.com/embed/playlist/24P6FdnvH9uZ9yxwRAkeZY?utm_source=generator&theme=0"
+                width="100%"
+                height="352"
+                allowFullScreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              ></iframe>
               <button className="hide-info" onClick={() => setShowInfo(false)}>
                 Hide Info
               </button>

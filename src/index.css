@@ -150,6 +150,7 @@ ol li .exercise {
   align-items: flex-start;
   padding: 2px 0;
   margin-bottom: 1em;
+  max-width: 600px;
 }
 
 ol li .exercise:hover button, ol li .exercise button:focus {
@@ -158,10 +159,14 @@ ol li .exercise:hover button, ol li .exercise button:focus {
   opacity: 1;
 }
 
+ol li .exercise .description {
+  flex-grow: 1;
+}
+
 ol li .exercise .delete {
   margin-left: 5px;
   margin-top: 5px;
-  opacity: 0;
+  opacity: 0.5;
   transition: opacity 0.2s;
 }
 
@@ -230,6 +235,7 @@ menu.utility > *:focus-visible {
     display: block;
     margin-bottom: 0.5em;
     color: hsl(0, 0%, 50%);
+    line-height: 1.5;
   }
 }
 
@@ -244,6 +250,7 @@ menu.utility > *:focus-visible {
 
 .counter-container .exercise {
   font-size: 72px;
+  line-height: 1.5;
 }
 
 .counter {
@@ -484,6 +491,8 @@ footer a:visited {
   display: block;
   color: hsl(0, 0%, 20%);
   flex-grow: 1;
+  display: flex;
+  padding-right: 1em;
 }
 
 .workout-option-difficulty {
@@ -511,7 +520,26 @@ footer a:visited {
   }
 }
 
+.star {
+    height: 32px;
+}
+
+.workout-option-favorite .star {
+  height: 10px;
+}
+
 .favorite {
+  > img {
+    height: 32px;
+    filter: grayscale(100%);
+    opacity: 0.5;
+    transition: 0.2s;
+
+    &.active {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+  }
   margin-left: 0.5em;
 }
 
@@ -570,7 +598,8 @@ footer a:visited {
 
 
 .input-group-control {
-  /* display: inline-flex; */
+  display: inline-flex;
+  max-width: 300px;
 }
 
 

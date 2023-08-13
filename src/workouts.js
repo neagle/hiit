@@ -302,7 +302,7 @@ const workouts = [
   {
     name: "Buzz Lightyear",
     description:
-      "To infinnity and beyond! But only if you can pass Star Command's fitness requirements.",
+      "To infinity and beyond! But only if you can pass Star Command's fitness requirements.",
     extraCredit: "30 seconds rest between sets.",
     difficulty: 2,
     levels: [3, 5, 7],

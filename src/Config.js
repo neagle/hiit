@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { AnimatePresence, Reorder } from "framer-motion";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Select from "react-select";
 import VoiceList from "./VoiceList.js";
 import Incrementer from "./Incrementer.js";
 import Checkbox from "./Checkbox.js";
 import DifficultyMeter from "./DifficultyMeter.js";
-import { numberize } from "./utils.js";
+import { numberize, uuid } from "./utils.js";
 import exerciseDemonstrations from "./exercise-demonstrations.js";
+import Star from "./Star.js";
 
 import deleteSoundUrl from "./sounds/general/Negative Sounds/sfx_sounds_damage1.wav";
 import addSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move4.wav";
@@ -53,6 +55,10 @@ const Config = ({
   favorites,
   setFavorites,
 }) => {
+  const [onlyShowFavorites, setOnlyShowFavorites] = useLocalStorage(
+    "onlyShowFavorites",
+    false
+  );
   const [showInfo, _setShowInfo] = useLocalStorage("showInfo", true);
   const setShowInfo = (state) => {
     _setShowInfo(state);
@@ -61,12 +67,17 @@ const Config = ({
   const [newExerciseName, setNewExerciseName] = useState("");
   const [newExerciseDuration, setNewExerciseDuration] = useState(20);
 
+  const toggleOnlyShowFavorites = () => {
+    setOnlyShowFavorites(!onlyShowFavorites);
+  };
+
   const addNewExercise = () => {
     play(addSound);
 
     setExercises([
       ...exercises,
-      { name: newExerciseName, duration: newExerciseDuration },
+      // Add a unique ID to each exercise for the sake of animation / reordering
+      { name: newExerciseName, duration: newExerciseDuration, id: uuid() },
     ]);
 
     setNewExerciseName("");
@@ -107,7 +118,10 @@ const Config = ({
       setSets(selectedWorkout.levels[0]);
       setLevels(selectedWorkout.levels);
       setRest(selectedWorkout.rest);
-      setExercises(selectedWorkout.exercises);
+      setExercises(
+        // Assign a unique ID to each exercise
+        selectedWorkout.exercises.map((e) => ({ ...e, id: uuid() }))
+      );
       play(selectWorkoutSound);
     } else {
       setSelectedWorkout(null);
@@ -128,7 +142,7 @@ const Config = ({
     );
   };
 
-  const workoutOptions = workouts
+  let workoutOptions = workouts
     .sort((a, b) => a.difficulty - b.difficulty)
     .map((workout) => {
       return {
@@ -137,6 +151,10 @@ const Config = ({
         favorite: favorites.includes(workout.name),
       };
     });
+
+  if (onlyShowFavorites) {
+    workoutOptions = workoutOptions.filter((workout) => workout.favorite);
+  }
 
   const CustomOption = ({ data, innerRef, innerProps }) => {
     return (
@@ -148,7 +166,11 @@ const Config = ({
         {...innerProps}
       >
         <span className="workout-option-name">
-          {data.favorite && <span className="workout-option-favorite">★</span>}
+          {data.favorite && (
+            <span className="workout-option-favorite">
+              <Star />
+            </span>
+          )}
           {data.name}
         </span>
         <span className="workout-option-difficulty">
@@ -162,13 +184,16 @@ const Config = ({
     return favorites.includes(workout.name);
   };
 
-  // TODO: Don't forget to add a sound for this! :D
   const toggleFavorite = () => {
     if (isFavorite(selectedWorkout)) {
-      setFavorites(
-        favorites.filter((favorite) => favorite !== selectedWorkout.name)
+      const newFavorites = favorites.filter(
+        (favorite) => favorite !== selectedWorkout.name
       );
+      setFavorites(newFavorites);
       play(unfavoriteSound);
+      if (!newFavorites.length) {
+        setOnlyShowFavorites(false);
+      }
     } else {
       setFavorites([...favorites, selectedWorkout.name]);
       play(favoriteSound);
@@ -206,28 +231,33 @@ const Config = ({
                 the clock and focus on your fitness!
               </p>
               <p>
-                If you need some music suggestions, the complete{" "}
-                <a href="https://open.spotify.com/playlist/24P6FdnvH9uZ9yxwRAkeZY">
-                  Kosmischer Läufer: The Secret Cosmic Music of the East German
-                  Olympic Program 1972 – 83
-                </a>{" "}
-                collection is, in the opinion of my ears, the greatest workout
-                music of all time.
+                You can select from one of the pre-configured workouts, modify
+                it if you like, or build your own from scratch.
               </p>
-              <iframe
+              {/* Saved for later! }
+              {/* <iframe
                 title="Kosmischer Läufer: The Secret Cosmic Music of the East German Olympic Program 1972 – 83"
                 style={{ border: 0, borderRadius: 12, marginBottom: "1em" }}
                 src="https://open.spotify.com/embed/playlist/24P6FdnvH9uZ9yxwRAkeZY?utm_source=generator&theme=0"
                 width="100%"
                 height="352"
                 allowFullScreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                allow="autoplay; clipboard-write; encrypted-media *; fullscreen; picture-in-picture"
                 loading="lazy"
-              ></iframe>
+              ></iframe> */}
               <button className="hide-info" onClick={() => setShowInfo(false)}>
                 Hide Info
               </button>
             </div>
+          )}
+          {favorites.length > 0 && (
+            <label>
+              <Checkbox
+                checked={onlyShowFavorites}
+                onChange={toggleOnlyShowFavorites}
+              />{" "}
+              Only show favorites
+            </label>
           )}
           <label>
             Workouts:
@@ -254,7 +284,7 @@ const Config = ({
               }`}
               onClick={toggleFavorite}
             >
-              {isFavorite(selectedWorkout) ? "★" : "☆"}
+              {isFavorite(selectedWorkout) ? <Star /> : <Star active={false} />}
             </button>
           </label>
           <div className="meta">
@@ -388,26 +418,34 @@ const Config = ({
               </div>
             </div>
           </label>
-          <ol>
-            {exercises.map((exercise, i) => (
-              <li key={i}>
-                <div className="exercise">
-                  {/* <b className="handle"></b> */}
-                  <div className="description">
-                    <strong>{exercise.duration}</strong> seconds of{" "}
-                    {exerciseDisplayName(exercise.name)}{" "}
+          <Reorder.Group as="ol" values={exercises} onReorder={setExercises}>
+            <AnimatePresence>
+              {exercises.map((exercise, i) => (
+                <Reorder.Item
+                  key={exercise.id}
+                  value={exercise}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <div className="exercise">
+                    <b className="handle"></b>
+                    <div className="description">
+                      <strong>{exercise.duration}</strong> seconds of{" "}
+                      {exerciseDisplayName(exercise.name)}{" "}
+                    </div>
+                    <button
+                      className="delete"
+                      title="Remove this exercise"
+                      onClick={() => removeExercise(i)}
+                    >
+                      &times;
+                    </button>
                   </div>
-                  <button
-                    className="delete"
-                    title="Remove this exercise"
-                    onClick={() => removeExercise(i)}
-                  >
-                    &times;
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ol>
+                </Reorder.Item>
+              ))}
+            </AnimatePresence>
+          </Reorder.Group>
           {!exercises?.length && "Add some exercises!"}
           {exercises.length > 0 && (
             <button className="clear" onClick={clearExercises}>

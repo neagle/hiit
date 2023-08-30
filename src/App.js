@@ -1,7 +1,9 @@
 import useLocalStorage from "./hooks/useLocalStorage";
+import Welcome from "./Welcome";
 import Config from "./Config";
 import Counter from "./Counter";
 import "./App.css";
+import { uuid } from "./utils.js";
 
 import { ReactComponent as ListIcon } from "./icons/list.svg";
 import { ReactComponent as FullScreenIcon } from "./icons/full-screen.svg";
@@ -20,20 +22,32 @@ function App() {
   const defaultWorkout = workouts.sort(
     (a, b) => a.difficulty - b.difficulty
   )[0];
-  const [hideConfig, setHideConfig] = useLocalStorage("hideConfig", false);
+  const [firstVisit, setFirstVisit] = useLocalStorage("firstVisit", true);
+  const [hideConfig, _setHideConfig] = useLocalStorage("hideConfig", true);
+  const setHideConfig = (state) => {
+    _setHideConfig(state);
+    if (state === false) {
+      play(configOpenSound);
+    } else {
+      play(configCloseSound);
+    }
+    if (state === false && firstVisit) {
+      firstVisit && setFirstVisit(false);
+    }
+  };
   const [sets, setSets] = useLocalStorage("sets", defaultWorkout.levels[0]);
   const [levels, setLevels] = useLocalStorage("levels", defaultWorkout.levels);
   const [rest, setRest] = useLocalStorage("rest", defaultWorkout.rest);
   const [exercises, setExercises] = useLocalStorage(
     "exercises",
-    defaultWorkout.exercises
+    defaultWorkout.exercises.map((e) => ({ ...e, id: uuid() }))
   );
   const [selectedWorkout, setSelectedWorkout] = useLocalStorage(
     "workout",
     defaultWorkout
   );
   const [favorites, setFavorites] = useLocalStorage("favorites", []);
-  const [soundEnabled, setSoundEnabled] = useLocalStorage("souneEnabled", true);
+  const [soundEnabled, setSoundEnabled] = useLocalStorage("soundEnabled", true);
   const [speechEnabled, setSpeechEnabled] = useLocalStorage(
     "speechEnabled",
     true
@@ -147,14 +161,7 @@ function App() {
         <button
           title="Configuration"
           className={`pixel-icon toggle-config ${hideConfig ? "show" : "hide"}`}
-          onClick={() => {
-            if (hideConfig) {
-              play(configOpenSound);
-            } else {
-              play(configCloseSound);
-            }
-            setHideConfig(!hideConfig);
-          }}
+          onClick={() => setHideConfig(!hideConfig)}
         >
           <ListIcon alt={`${hideConfig ? "Show" : "Hide"} config`} />
         </button>
@@ -166,15 +173,20 @@ function App() {
           <FullScreenIcon alt="Toggle Full Screen" />
         </button>
       </menu>
-      <Counter
-        sets={sets}
-        rest={rest}
-        exercises={exercises}
-        say={say}
-        play={play}
-        setHideConfig={setHideConfig}
-        name={selectedWorkout.name}
-      />
+
+      {firstVisit ? (
+        <Welcome setHideConfig={setHideConfig} />
+      ) : (
+        <Counter
+          sets={sets}
+          rest={rest}
+          exercises={exercises}
+          say={say}
+          play={play}
+          setHideConfig={setHideConfig}
+          name={selectedWorkout.name}
+        />
+      )}
       <footer>
         <b className="copy">&copy;</b>2023{" "}
         <a href="https://nateeagle.com">Nate Eagle</a> &bull;{" "}

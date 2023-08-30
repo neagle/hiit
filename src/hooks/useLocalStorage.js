@@ -1,6 +1,11 @@
 import { useState } from "react";
 
 function useLocalStorage(key, initialValue) {
+  // When deployed, local storage is segmented by domain, so it's not such a big
+  // deal, but in local development, it's nice to have variables be namespaced
+  const APP_PREFIX = "retro-hiit-";
+  const STORAGE_KEY = APP_PREFIX + key;
+
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -9,7 +14,7 @@ function useLocalStorage(key, initialValue) {
     }
     try {
       // Get from local storage by key
-      const item = window.localStorage.getItem(key);
+      const item = window.localStorage.getItem(STORAGE_KEY);
       // Parse stored json or if none return initialValue
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
@@ -29,7 +34,7 @@ function useLocalStorage(key, initialValue) {
       setStoredValue(valueToStore);
       // Save to local storage
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(valueToStore));
       }
     } catch (error) {
       // A more advanced implementation would handle the error case

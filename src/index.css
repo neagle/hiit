@@ -1,6 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   height: 100%;
 }
 
@@ -25,7 +28,9 @@ button:disabled {
   opacity: 0.5;
 }
 
-input, button, select {
+input,
+button,
+select {
   font-family: "Press Start 2P";
 }
 
@@ -39,7 +44,8 @@ select {
   border: 0;
 }
 
-input[type="number"], input.number {
+input[type="number"],
+input.number {
   width: 50px;
 }
 
@@ -48,7 +54,7 @@ input:focus {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -72,12 +78,14 @@ code {
   margin: 0 0 1em;
   flex-grow: 1;
   color: white;
-  text-shadow: 0.2em 0.2em hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
-  line-height: 1.5
+  text-shadow: 0.2em 0.2em
+    hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  line-height: 1.5;
 }
 
 .config h2 {
-  text-shadow: 0.2em 0.2em hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  text-shadow: 0.2em 0.2em
+    hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
   font-size: 18px;
 }
 
@@ -93,7 +101,6 @@ fieldset {
   transition: all 0.2s;
   max-height: 50%;
 }
-
 
 fieldset button {
   border: 0;
@@ -144,7 +151,6 @@ ol li .exercise {
   }
 }
 
-
 ol li .exercise {
   display: flex;
   align-items: flex-start;
@@ -153,7 +159,8 @@ ol li .exercise {
   max-width: 600px;
 }
 
-ol li .exercise:hover button, ol li .exercise button:focus {
+ol li .exercise:hover button,
+ol li .exercise button:focus {
   display: flex;
   align-items: center;
   opacity: 1;
@@ -218,7 +225,7 @@ menu.utility > *:focus-visible {
   padding: 100px 50px;
   height: 100%;
   box-sizing: border-box;
-  display: flex; 
+  display: flex;
   flex-flow: column;
   justify-content: center;
 }
@@ -243,7 +250,10 @@ menu.utility > *:focus-visible {
   color: hsla(0, 0%, 0%, 0.3);
 }
 
-.counter-container .exercise, .counter-container .counter, .counter-container .done, .counter-container .controls {
+.counter-container .exercise,
+.counter-container .counter,
+.counter-container .done,
+.counter-container .controls {
   font-size: 144px;
   text-align: center;
 }
@@ -267,11 +277,13 @@ menu.utility > *:focus-visible {
   color: hsl(200, 100%, 50%);
 }
 
-.counter, .exercise {
+.counter,
+.exercise {
   transition: color 0.2s;
 }
 
-.counter.inactive, .exercise.inactive {
+.counter.inactive,
+.exercise.inactive {
   color: hsl(0, 0%, 50%);
 }
 
@@ -478,12 +490,20 @@ footer a:visited {
   padding: 1em;
 
   &.active {
-    background: hsl(var(--primary-hue), 100%, calc(var(--primary-lightness)*2)) !important;
+    background: hsl(
+      var(--primary-hue),
+      100%,
+      calc(var(--primary-lightness) * 2)
+    ) !important;
   }
 
   &:hover {
     /* background: hsl(0, 0%, 80%); */
-    background: hsl(var(--primary-hue), 100%, calc(var(--primary-lightness)*2.3));
+    background: hsl(
+      var(--primary-hue),
+      100%,
+      calc(var(--primary-lightness) * 2.3)
+    );
   }
 }
 
@@ -521,7 +541,7 @@ footer a:visited {
 }
 
 .star {
-    height: 32px;
+  height: 32px;
 }
 
 .workout-option-favorite .star {
@@ -555,7 +575,8 @@ footer a:visited {
   padding: 0.5em;
   margin-top: 2em;
   margin-left: calc(-0.5em - 5px);
-  box-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  box-shadow: 5px 5px
+    hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
   line-height: 1.5;
   text-align: left;
 }
@@ -567,16 +588,18 @@ footer a:visited {
   border-bottom: 5px solid white;
 }
 
-.show-info, .hide-info {
+.show-info,
+.hide-info {
   font-size: 12px;
   padding: 0.5em;
   border: 3px solid white;
   margin: 0 0 0 calc(-0.5em - 3px);
-  box-shadow: 5px 5px hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
+  box-shadow: 5px 5px
+    hsla(var(--primary-hue), 0%, calc(var(--primary-lightness) - 20%), 0.5);
 }
 
 .show-info {
-  color:  white;
+  color: white;
   font-size: 12px;
   margin-left: 2em;
   margin-right: 1em;
@@ -596,12 +619,10 @@ footer a:visited {
   }
 }
 
-
 .input-group-control {
   display: inline-flex;
   max-width: 300px;
 }
-
 
 @media (max-width: 600px) {
   .config {
@@ -633,7 +654,8 @@ footer a:visited {
     transform: translateY(-50%);
   }
 
-  .show-info, .hide-info {
+  .show-info,
+  .hide-info {
     font-size: 10px;
   }
 
@@ -674,7 +696,10 @@ footer a:visited {
     margin-bottom: 20vh;
     padding-right: 60px;
   }
-  .counter-container .exercise, .counter-container .counter, .counter-container .done, .counter-container .controls {
+  .counter-container .exercise,
+  .counter-container .counter,
+  .counter-container .done,
+  .counter-container .controls {
     font-size: 72px;
   }
 
@@ -696,7 +721,8 @@ footer a:visited {
     margin-left: 0;
   }
 
-  .show-info, .hide-info {
+  .show-info,
+  .hide-info {
     margin-left: 0;
   }
 
@@ -723,5 +749,28 @@ footer a:visited {
 
   .voice-list select {
     max-width: 300px;
+  }
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10vw;
+  text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.welcome h1 {
+  color: hsl(0, 0%, 30%);
+  line-height: 1.5;
+  font-size: 48px;
+}
+
+@media (max-width: 600px) {
+  .welcome h1 {
+    font-size: 24px;
   }
 }

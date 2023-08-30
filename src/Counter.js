@@ -44,7 +44,10 @@ const Counter = ({ name, sets, rest, exercises, say, play, setHideConfig }) => {
   const currentExerciseRef = useRef(currentExercise);
   currentExerciseRef.current = currentExercise;
 
-  const [secondsLeft, setSecondsLeft] = useLocalStorage("secondsLeft");
+  const [secondsLeft, setSecondsLeft] = useLocalStorage(
+    "secondsLeft",
+    exercises[currentExercise]?.duration
+  );
   const secondsLeftRef = useRef(secondsLeft);
   secondsLeftRef.current = secondsLeft;
 

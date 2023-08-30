@@ -14,7 +14,6 @@ import deleteSoundUrl from "./sounds/general/Negative Sounds/sfx_sounds_damage1.
 import addSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move4.wav";
 import resetSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral4.wav";
 import clickSoundUrl from "./sounds/general/Menu Sounds/sfx_menu_move3.wav";
-import configCloseSoundUrl from "./sounds/general/Pause Sounds/sfx_sounds_pause7_in.wav";
 import selectWorkoutSoundUrl from "./sounds/general/Positive Sounds/sfx_sounds_powerup4.wav";
 import favoriteSoundUrl from "./sounds/general/Positive Sounds/sfx_sounds_powerup2.wav";
 import unfavoriteSoundUrl from "./sounds/general/Neutral Sounds/sfx_sound_neutral7.wav";
@@ -24,7 +23,6 @@ const deleteSound = new Audio(deleteSoundUrl);
 const addSound = new Audio(addSoundUrl);
 const resetSound = new Audio(resetSoundUrl);
 const clickSound = new Audio(clickSoundUrl);
-const configCloseSound = new Audio(configCloseSoundUrl);
 const selectWorkoutSound = new Audio(selectWorkoutSoundUrl);
 const favoriteSound = new Audio(favoriteSoundUrl);
 const unfavoriteSound = new Audio(unfavoriteSoundUrl);
@@ -215,7 +213,6 @@ const Config = ({
           className="close-config"
           onClick={() => {
             setHideConfig(true);
-            play(configCloseSound);
           }}
         >
           &times;
@@ -458,7 +455,6 @@ const Config = ({
               className="close-config-and-start"
               onClick={() => {
                 setHideConfig(true);
-                play(configCloseSound);
               }}
             >
               Close Config and Get Ready to Go!
